@@ -1,0 +1,71 @@
+{
+    "project": {
+        "name": "城市网络流量预测",
+        "version": "1.0.0",
+        "description": "基于机器学习的城市网络流量长时预测系统"
+    },
+    "data": {
+        "data_path": "data/data.csv",
+        "holiday_path": "data/holiday_dates.csv",
+        "processed_path": "data/processed_data.csv",
+        "features_path": "data/features_data.csv"
+    },
+    "preprocessing": {
+        "missing_value_method": "interpolate",
+        "outlier_method": "iqr",
+        "outlier_threshold": 1.5,
+        "normalization_method": "minmax",
+        "feature_range": [0, 1]
+    },
+    "feature_engineering": {
+        "lags": [1, 2, 3, 24, 48, 168],
+        "rolling_windows": [3, 6, 12, 24, 72, 168],
+        "correlation_threshold": 0.85,
+        "create_time_features": true,
+        "create_holiday_features": true,
+        "create_lag_features": true,
+        "create_rolling_features": true,
+        "create_advanced_features": true,
+        "create_interaction_features": true
+    },
+    "model": {
+        "models_to_train": ["random_forest", "xgboost", "lightgbm", "gradient_boosting"],
+        "test_size": 0.2,
+        "time_based_split": true,
+        "cross_validation_splits": 3,
+        "random_state": 42
+    },
+    "xgboost_params": {
+        "n_estimators": 200,
+        "max_depth": 8,
+        "learning_rate": 0.05,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "random_state": 42
+    },
+    "random_forest_params": {
+        "n_estimators": 200,
+        "max_depth": 15,
+        "min_samples_split": 5,
+        "random_state": 42
+    },
+    "lightgbm_params": {
+        "n_estimators": 200,
+        "max_depth": 8,
+        "learning_rate": 0.05,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "random_state": 42
+    },
+    "prediction": {
+        "start_date": "2019-01-01 00:00:00",
+        "end_date": "2019-02-28 23:00:00",
+        "output_path": "results/predictions.csv"
+    },
+    "evaluation": {
+        "hour_weight": 0.7,
+        "peak_weight": 0.2,
+        "holiday_weight": 0.1,
+        "holidays_to_evaluate": ["元旦", "春节"]
+    }
+}
